@@ -1,27 +1,59 @@
-name: Build Kivy APK
-on: [push, workflow_dispatch]
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+[app]
+# (str) Titre de votre application
+title = Pondeuse Pro
 
-      # Étape cruciale : installer les dépendances système
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential libltdl-dev libffi-dev libssl-dev python3-dev
+# (str) Nom du package
+package.name = pondeusepro
 
-      - name: Build with Buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1
-        id: buildozer
-        with:
-          workdir: .
-          buildozer_version: stable
+# (str) Domaine du package
+package.domain = com.pondeusepro
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: package
-          path: ${{ steps.buildozer.outputs.filename }}
+# (str) Répertoire source (généralement .)
+source.dir = .
+
+# (list) Extensions de fichiers à inclure
+source.include_exts = py,png,jpg,kv,atlas
+
+# (list) Dépendances de l'application
+requirements = python3,kivy,kivymd==1.1.1,sdl2,pillow,requests,pycryptodomex,jnius
+
+# (str) Version de l'application
+version = 1.0
+
+# (str) Orientation (portrait ou all)
+orientation = portrait
+
+# (bool) Plein écran
+fullscreen = 0
+
+# (list) Permissions Android
+android.permissions = INTERNET
+
+# (int) API Android cible
+android.api = 33
+
+# (int) API Android minimale
+android.minapi = 21
+
+# (str) Version du NDK
+android.ndk = 25b
+
+# (bool) Accepter la licence du SDK
+android.accept_sdk_license = True
+
+# (list) Architectures cibles
+android.archs = arm64-v8a
+
+# (str) Branche de python-for-android
+p4a.branch = develop
+
+
+[buildozer]
+# (int) Niveau de log (2 = debug)
+log_level = 2
+
+# (str) Répertoire de build
+build_dir = .buildozer
+
+# (str) Répertoire de sortie
+bin_dir = bin
